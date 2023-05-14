@@ -12,7 +12,6 @@ class punto: public QGraphicsItem
     int radio = 5;
 
 public:
-    punto();
     punto(int x, int y);
     QRectF boundingRect() const ;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);

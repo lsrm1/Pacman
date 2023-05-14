@@ -12,7 +12,6 @@ class pared:public QGraphicsItem
     int h;
 
 public:
-    pared();
     pared(int x, int y, int w, int h);
     QRectF boundingRect() const ;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);

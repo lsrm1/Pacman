@@ -5,10 +5,11 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
     escena = new QGraphicsScene();
     ui->graphicsView->setScene(escena);
-    escena->setSceneRect(0,0,895,715);
+    escena->setSceneRect(0,0,970,715);
 
     escena->setBackgroundBrush(Qt::black);
 
@@ -31,17 +32,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     int puntuacion = 0;
 
-
-    Puntos.push_back(new punto(20,20));
-    escena->addItem(Puntos.back());
-    Puntos.push_back(new punto(20,30));
-    escena->addItem(Puntos.back());
-    Puntos.push_back(new punto(20,40));
-    escena->addItem(Puntos.back());
-    Puntos.push_back(new punto(20,50));
-    escena->addItem(Puntos.back());
-    Puntos.push_back(new punto(20,60));
-    escena->addItem(Puntos.back());
 }
 
 MainWindow::~MainWindow()
@@ -49,6 +39,24 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::Laberinto()
+{
+    ifstream mapa;
+    int x, y, w, h;
+    mapa.open("mapa.txt");
+
+    while (mapa.good()){
+
+        mapa >> x;
+        mapa >> y;
+        mapa >> w;
+        mapa >> h;
+
+        Paredes.push_back(new pared(x,y,w,h));
+        escena->addItem(Paredes.back());
+    }
+    mapa.close();
+}
 
 void MainWindow::keyPressEvent(QKeyEvent *evento)
 {
@@ -60,7 +68,7 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
 
 void MainWindow::movimiento(){
 
-    if (tecla== "H"){
+    if (tecla == "H"){
        pac->setRotation(270);
         pac->MoveUp();
     }
@@ -80,24 +88,17 @@ void MainWindow::movimiento(){
 
     if(EvaluarColision()){
 
-        if (tecla == "H")
-            pac->MoveDown();
+        if (tecla == "H") pac->MoveDown();
 
-        if (tecla == "N")
-            pac->MoveUp();
+        if (tecla == "N") pac->MoveUp();
 
-        if (tecla == "B")
-            pac->MoveRight();
+        if (tecla == "B") pac->MoveRight();
 
-        if (tecla == "M")
-            pac->MoveLeft();
+        if (tecla == "M") pac->MoveLeft();
 
     }
 
-    if(Comermoneda())
-        {
-            aumentarPunt();
-        }
+    if(Comermoneda())aumentarPunt();
 
 }
 
@@ -144,13 +145,9 @@ bool MainWindow::EvaluarColision()
 
     for ( it = Paredes.begin(); it != Paredes.end(); it++){
 
-        if((*it)->collidesWithItem(pac)){
-
+        if((*it)->collidesWithItem(pac))
             return true;
-
-        }
     }
-
     return false;
 
 }
@@ -161,55 +158,34 @@ bool MainWindow::EvaluarColisionghost()
 
     for ( i = Paredes.begin(); i != Paredes.end(); i++){
 
-        if((*i)->collidesWithItem(phantom)){
+        if((*i)->collidesWithItem(phantom))
+            return true;
+    }
 
+    return false;
+}
+
+bool MainWindow::Comermoneda(){
+
+    for (int i = 0;i < Puntos.size();i++) {
+
+        if(pac->collidesWithItem(Puntos.at(i))){
+
+            escena->removeItem(Puntos.at(i));
+            Puntos.removeAt(i);
             return true;
 
         }
     }
-
     return false;
 }
 
-bool MainWindow::Comermoneda()
-{
-    for (int i = 0;i < Puntos.size();i++) {
-
-       if(pac->collidesWithItem(Puntos.at(i))){
-           escena->removeItem(Puntos.at(i));
-           Puntos.removeAt(i);
-           return true;
-
-        }
-    }
-
-    return false;
-}
-
-void MainWindow::aumentarPunt()
-{
+void MainWindow::aumentarPunt(){
     puntuacion += 5;
     ui->lcdNumber->display(puntuacion);
 }
 
-void MainWindow::Laberinto()
-{
-    ifstream mapa;
-    int x, y, w, h;
-    mapa.open("mapa.txt");
 
-    while (mapa.good()){
-
-        mapa >> x;
-        mapa >> y;
-        mapa >> w;
-        mapa >> h;
-
-        Paredes.push_back(new pared(x,y,w,h));
-        escena->addItem(Paredes.back());
-    }
-    mapa.close();
-}
 
 
 

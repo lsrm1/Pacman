@@ -8,8 +8,7 @@
 #include <QPainter>
 #include <QObject>
 
-class Fantasma: public QObject, public QGraphicsItem
-{
+class Fantasma: public QObject, public QGraphicsItem{
 public:
     int posx,posy;
     int velocidad;

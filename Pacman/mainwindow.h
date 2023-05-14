@@ -27,15 +27,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-//signals:
-    //void aviso();
-
 public slots:
 
     void movimiento();
     void movghost();
 
 private:
+
     Ui::MainWindow *ui;
     QGraphicsScene *escena;
 
@@ -53,12 +51,13 @@ private:
 
     bool EvaluarColision();
     bool EvaluarColisionghost();
+    bool Comermoneda();
 
     void keyPressEvent(QKeyEvent *evento);
-    bool Comermoneda();
-    int puntuacion;
     void Laberinto();
     void aumentarPunt();
+
+    int puntuacion;
 
 };
 #endif // MAINWINDOW_H

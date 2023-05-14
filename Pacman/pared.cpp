@@ -1,10 +1,5 @@
 #include "pared.h"
 
-pared::pared()
-{
-
-}
-
 pared::pared(int x, int y, int w, int h)
 {
     this->posx = x ;

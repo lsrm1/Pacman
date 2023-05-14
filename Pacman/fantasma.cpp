@@ -12,7 +12,6 @@ Fantasma::Fantasma(QObject *parent) : QObject(parent)
     velocidad = 5;
     setPos(posx,posy);
 
-    //dimensiones de la imagen
     ancho = 27.5;
     alto = 24;
     timer->start(220);
