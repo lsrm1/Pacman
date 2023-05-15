@@ -9,7 +9,7 @@ class punto: public QGraphicsItem
 {
     int posx;
     int posy;
-    int radio = 5;
+    int radio = 7;
 
 public:
     punto(int x, int y);

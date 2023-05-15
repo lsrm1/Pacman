@@ -12,8 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
     escena->setSceneRect(0,0,970,715);
 
     escena->setBackgroundBrush(Qt::black);
-
-    Laberinto();
+    CrearLaberinto();
+    CrearPuntos();
 
     pac = new pacman;
     escena->addItem(pac);
@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     int puntuacion = 0;
 
+
 }
 
 MainWindow::~MainWindow()
@@ -39,7 +40,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::Laberinto()
+void MainWindow::CrearLaberinto()
 {
     ifstream mapa;
     int x, y, w, h;
@@ -58,47 +59,65 @@ void MainWindow::Laberinto()
     mapa.close();
 }
 
+void MainWindow::CrearPuntos()
+{
+    ifstream score;
+    int x, y;
+    score.open("puntos.txt");
+
+    while (score.good()){
+
+        score >> x;
+        score >> y;
+
+        Puntos.push_back(new punto(x,y));
+        escena->addItem(Puntos.back());
+    }
+    score.close();
+}
+
 void MainWindow::keyPressEvent(QKeyEvent *evento)
 {
-    if(evento->key() == Qt::Key_H ) tecla = "H";
-    else if(evento->key() == Qt::Key_N ) tecla = "N";
-    else if(evento->key() == Qt::Key_B ) tecla = "B";
-    else if(evento->key() == Qt::Key_M ) tecla = "M";
+    if(evento->key() == Qt::Key_W) tecla = "W";
+    else if(evento->key() == Qt::Key_S ) tecla = "S";
+    else if(evento->key() == Qt::Key_A ) tecla = "A";
+    else if(evento->key() == Qt::Key_D) tecla = "D";
 }
 
 void MainWindow::movimiento(){
 
-    if (tecla == "H"){
+    if (tecla == "W"){
        pac->setRotation(270);
         pac->MoveUp();
     }
 
-    if (tecla == "N"){
+    if (tecla == "S"){
         pac->setRotation(90);
         pac->MoveDown();
     }
-    if (tecla == "B"){
+    if (tecla == "A"){
         pac->setRotation(180);
         pac->MoveLeft();
     }
-    if (tecla == "M"){
+    if (tecla == "D"){
         pac->setRotation(0);
         pac->MoveRight();
     }
 
     if(EvaluarColision()){
 
-        if (tecla == "H") pac->MoveDown();
+        if (tecla == "W") pac->MoveDown();
 
-        if (tecla == "N") pac->MoveUp();
+        if (tecla == "S") pac->MoveUp();
 
-        if (tecla == "B") pac->MoveRight();
+        if (tecla == "A") pac->MoveRight();
 
-        if (tecla == "M") pac->MoveLeft();
+        if (tecla == "D") pac->MoveLeft();
 
     }
 
-    if(Comermoneda())aumentarPunt();
+    if(Comerpunto())
+        aumentarPunt();
 
 }
 
@@ -165,7 +184,7 @@ bool MainWindow::EvaluarColisionghost()
     return false;
 }
 
-bool MainWindow::Comermoneda(){
+bool MainWindow::Comerpunto(){
 
     for (int i = 0;i < Puntos.size();i++) {
 

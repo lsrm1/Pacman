@@ -51,10 +51,11 @@ private:
 
     bool EvaluarColision();
     bool EvaluarColisionghost();
-    bool Comermoneda();
+    bool Comerpunto();
 
     void keyPressEvent(QKeyEvent *evento);
-    void Laberinto();
+    void CrearLaberinto();
+    void CrearPuntos();
     void aumentarPunt();
 
     int puntuacion;
