@@ -12,6 +12,7 @@ pacman::pacman(QObject *parent) : QObject(parent){
     velocidad = 5;
     setPos(posx,posy);
 
+    //Sprite
     ancho = 27.5;
     alto = 25;
     timer->start(220);
@@ -33,7 +34,7 @@ void pacman::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     painter->drawPixmap(-ancho/2,-alto/2,*pixmap,columnas,0,ancho,alto);
 }
 
-void pacman::Actualizacion(){
+void pacman::Actualizacion(){ //Sprite
 
     columnas += 27.5;
 

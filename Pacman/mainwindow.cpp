@@ -7,28 +7,35 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     ui->setupUi(this);
+
+    // Escena
     escena = new QGraphicsScene();
     ui->graphicsView->setScene(escena);
     escena->setSceneRect(0,0,970,715);
-
     escena->setBackgroundBrush(Qt::black);
-    CrearLaberinto();
-    CrearPuntos();
 
+    //Pacman y Fantasma
     pac = new pacman;
     escena->addItem(pac);
 
     phantom = new Fantasma;
     escena->addItem(phantom);
 
+
+    //Movimiento continuo
     timeanima = new QTimer();
     timeghost = new QTimer();
 
     connect(timeanima,SIGNAL(timeout()),this,SLOT(movimiento()));
     timeanima->start(50);
-
     connect(timeghost,SIGNAL(timeout()),this,SLOT(movghost()));
     timeghost->start(80);
+
+
+    //Laberinto y puntos
+    CrearLaberinto();
+    CrearPuntos();
+
 
     int puntuacion = 0;
 
@@ -40,26 +47,26 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::CrearLaberinto()
+void MainWindow::CrearLaberinto() // Recibe un txt con posiciones, ancho y alto
 {
     ifstream mapa;
-    int x, y, w, h;
+    int x, y, ancho, alto;
     mapa.open("mapa.txt");
 
     while (mapa.good()){
 
         mapa >> x;
         mapa >> y;
-        mapa >> w;
-        mapa >> h;
+        mapa >> ancho;
+        mapa >> alto;
 
-        Paredes.push_back(new pared(x,y,w,h));
+        Paredes.push_back(new pared(x,y,ancho,alto));
         escena->addItem(Paredes.back());
     }
     mapa.close();
 }
 
-void MainWindow::CrearPuntos()
+void MainWindow::CrearPuntos() // Recibe un txt con posiciones
 {
     ifstream score;
     int x, y;
@@ -84,7 +91,7 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
     else if(evento->key() == Qt::Key_D) tecla = "D";
 }
 
-void MainWindow::movimiento(){
+void MainWindow::movimiento(){ //Movimiento Pacman
 
     if (tecla == "W"){
        pac->setRotation(270);
@@ -121,7 +128,7 @@ void MainWindow::movimiento(){
 
 }
 
-void MainWindow::movghost()
+void MainWindow::movghost() //Movimiento fantasma
 {
     if (phantom->posx < pac->posx){
           phantom->MoveRight();
@@ -158,7 +165,7 @@ void MainWindow::movghost()
 
 }
 
-bool MainWindow::EvaluarColision()
+bool MainWindow::EvaluarColision() // Colision Pacman-Pared
 {
     QList<pared*>::iterator it;
 
@@ -171,7 +178,7 @@ bool MainWindow::EvaluarColision()
 
 }
 
-bool MainWindow::EvaluarColisionghost()
+bool MainWindow::EvaluarColisionghost()// Colision Fantasma-    Pared
 {
     QList<pared*>::iterator i;
 

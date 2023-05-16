@@ -28,7 +28,7 @@ public:
     void MoveDown();
     void MoveLeft();
     void MoveRight();
-    void Muere();
+    void Muere();   //Cambia Sprite
 
 public slots:
     void Actualizacion();
