@@ -14,6 +14,10 @@ MainWindow::MainWindow(QWidget *parent)
     escena->setSceneRect(0,0,970,715);
     escena->setBackgroundBrush(Qt::black);
 
+    //Laberinto y puntos
+    CrearLaberinto();
+    CrearPuntos();
+
     //Pacman y Fantasma
     pac = new pacman;
     escena->addItem(pac);
@@ -32,9 +36,6 @@ MainWindow::MainWindow(QWidget *parent)
     timeghost->start(80);
 
 
-    //Laberinto y puntos
-    CrearLaberinto();
-    CrearPuntos();
 
 
     int puntuacion = 0;
@@ -85,7 +86,7 @@ void MainWindow::CrearPuntos() // Recibe un txt con posiciones
 
 void MainWindow::keyPressEvent(QKeyEvent *evento)
 {
-    if(evento->key() == Qt::Key_W) tecla = "W";
+    if(evento->key() == Qt::Key_Z) tecla = "Z";
     else if(evento->key() == Qt::Key_S ) tecla = "S";
     else if(evento->key() == Qt::Key_A ) tecla = "A";
     else if(evento->key() == Qt::Key_D) tecla = "D";
@@ -93,12 +94,12 @@ void MainWindow::keyPressEvent(QKeyEvent *evento)
 
 void MainWindow::movimiento(){ //Movimiento Pacman
 
-    if (tecla == "W"){
+    if (tecla == "S"){
        pac->setRotation(270);
         pac->MoveUp();
     }
 
-    if (tecla == "S"){
+    if (tecla == "Z"){
         pac->setRotation(90);
         pac->MoveDown();
     }
@@ -113,9 +114,9 @@ void MainWindow::movimiento(){ //Movimiento Pacman
 
     if(EvaluarColision()){
 
-        if (tecla == "W") pac->MoveDown();
+        if (tecla == "S") pac->MoveDown();
 
-        if (tecla == "S") pac->MoveUp();
+        if (tecla == "Z") pac->MoveUp();
 
         if (tecla == "A") pac->MoveRight();
 
@@ -178,7 +179,7 @@ bool MainWindow::EvaluarColision() // Colision Pacman-Pared
 
 }
 
-bool MainWindow::EvaluarColisionghost()// Colision Fantasma-    Pared
+bool MainWindow::EvaluarColisionghost()// Colision Fantasma-Pared
 {
     QList<pared*>::iterator i;
 
