@@ -37,8 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-
-    int puntuacion = 0;
+    puntuacion = 0;
 
 
 }
